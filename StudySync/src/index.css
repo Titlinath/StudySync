@@ -5,13 +5,28 @@
 @layer base {
   body {
     @apply text-gray-800 font-sans antialiased;
-    background: radial-gradient(circle at 20% 30%, #A3BFFA 0%, transparent 40%),
-                radial-gradient(circle at 80% 70%, #8AC6D1 0%, transparent 50%),
-                linear-gradient(135deg, #E9F0FF, #DFF6F0, #F7F9FC);
-    background-attachment: fixed;
+    font-family: 'Poppins', sans-serif;
   }
 }
 
 * {
   scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #E9F0FF;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #8AC6D1, #A3BFFA);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #6BA9B5, #8AA8E8);
 }

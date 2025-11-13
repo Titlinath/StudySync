@@ -20,19 +20,19 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0f172a] via-[#1e1b4b] to-[#312e81] text-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-[#E9F0FF] to-[#DFF6F0]">
       {/* Navbar */}
-      <nav className="bg-white/5 backdrop-blur-xl border-b border-white/10">
+      <nav className="bg-white shadow-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-[#3b82f6] to-[#ec4899] bg-clip-text text-transparent">
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-[#8AC6D1] to-[#A3BFFA] bg-clip-text text-transparent">
               StudySync
             </h1>
             <div className="flex items-center gap-4">
-              <span className="text-gray-300">Welcome, {user?.name}!</span>
+              <span className="text-gray-700">Welcome, {user?.name}!</span>
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-2 px-4 py-2 bg-red-500/20 hover:bg-red-500/30 border border-red-500/50 rounded-lg transition-all"
+                className="flex items-center gap-2 px-4 py-2 bg-red-50 hover:bg-red-100 border border-red-200 text-red-600 rounded-lg transition-all"
               >
                 <LogOut size={18} />
                 Logout
@@ -44,31 +44,31 @@ export default function Dashboard() {
 
       {/* Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h2 className="text-3xl font-bold mb-8">Dashboard</h2>
+        <h2 className="text-3xl font-bold text-gray-800 mb-8">Dashboard</h2>
         
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {[
-            { icon: Target, label: 'Active Goals', value: '8', color: 'from-[#3b82f6]' },
-            { icon: Calendar, label: 'Days Streak', value: '12', color: 'from-[#ec4899]' },
-            { icon: BookOpen, label: 'Subjects', value: '5', color: 'from-[#8b5cf6]' },
-            { icon: TrendingUp, label: 'Progress', value: '75%', color: 'from-[#22d3ee]' }
+            { icon: Target, label: 'Active Goals', value: '8', gradient: 'from-[#8AC6D1] to-[#A3BFFA]' },
+            { icon: Calendar, label: 'Days Streak', value: '12', gradient: 'from-[#FF9A8B] to-[#FFD6A5]' },
+            { icon: BookOpen, label: 'Subjects', value: '5', gradient: 'from-[#DFF6F0] to-[#8AC6D1]' },
+            { icon: TrendingUp, label: 'Progress', value: '75%', gradient: 'from-[#E8DFF5] to-[#A3BFFA]' }
           ].map((stat, idx) => (
             <div
               key={idx}
-              className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-all"
+              className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all"
             >
-              <div className={`w-12 h-12 bg-gradient-to-br ${stat.color} to-transparent rounded-lg flex items-center justify-center mb-4`}>
-                <stat.icon size={24} />
+              <div className={`w-12 h-12 bg-gradient-to-br ${stat.gradient} rounded-lg flex items-center justify-center mb-4`}>
+                <stat.icon size={24} className="text-white" />
               </div>
-              <p className="text-gray-400 text-sm">{stat.label}</p>
-              <p className="text-3xl font-bold mt-2">{stat.value}</p>
+              <p className="text-gray-600 text-sm">{stat.label}</p>
+              <p className="text-3xl font-bold text-gray-800 mt-2">{stat.value}</p>
             </div>
           ))}
         </div>
 
         <button
           onClick={() => navigate('/planner')}
-          className="px-8 py-3 bg-gradient-to-r from-[#3b82f6] to-[#ec4899] text-white rounded-lg font-semibold hover:shadow-[0_0_30px_rgba(59,130,246,0.6)] transition-all"
+          className="px-8 py-3 bg-gradient-to-r from-[#8AC6D1] to-[#A3BFFA] text-white rounded-lg font-semibold hover:shadow-lg transition-all"
         >
           Go to Study Planner
         </button>
