@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ArrowRight } from 'lucide-react';
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -27,6 +27,21 @@ export default function LandingPage() {
     navigate(`/auth?mode=${type}`);
   };
 
+  const handleFeatureClick = (featureType) => {
+    // Check if user is logged in
+    const token = localStorage.getItem('token');
+    
+    if (featureType === 'planner') {
+      if (token) {
+        // User is logged in, go to planner
+        navigate('/planner');
+      } else {
+        // User not logged in, redirect to signup
+        navigate('/auth?mode=register');
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#E9F0FF] to-[#DFF6F0]">
       {/* Navigation */}
@@ -36,7 +51,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             {/* Logo */}
-            <div className="flex-shrink-0">
+            <div className="flex-shrink-0 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
               <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-[#8AC6D1] via-[#A3BFFA] to-[#FF9A8B] bg-clip-text text-transparent bg-[length:200%_200%]" style={{ animation: 'flow 6s linear infinite' }}>
                 StudySync
               </h1>
@@ -186,22 +201,77 @@ export default function LandingPage() {
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
-              { icon: '📚', title: 'Smart Study Plans', desc: 'AI-powered scheduling that adapts to your learning style and creates personalized study roadmaps.', gradient: 'from-[#A3BFFA] to-[#8AC6D1]' },
-              { icon: '✏️', title: 'Organized Notes', desc: 'Rich text editor with tagging, search, and PDF export. Keep all materials in one place.', gradient: 'from-[#FF9A8B] to-[#FFD6A5]' },
-              { icon: '⏰', title: 'Focus Timers', desc: 'Pomodoro technique with smart breaks. Custom alarms keep you on track without stress.', gradient: 'from-[#DFF6F0] to-[#8AC6D1]' },
-              { icon: '🎯', title: 'Goal Tracking', desc: 'Set milestones, track progress, and celebrate achievements. Build streaks and earn badges.', gradient: 'from-[#E8DFF5] to-[#A3BFFA]' },
-              { icon: '📊', title: 'Visual Analytics', desc: 'Understand your study patterns with beautiful charts. Discover your peak productivity times.', gradient: 'from-[#A3BFFA] to-[#E9F0FF]' },
-              { icon: '🌟', title: 'Daily Motivation', desc: 'Start each day inspired with quotes and connect with a supportive community of learners.', gradient: 'from-[#FFD6A5] to-[#FF9A8B]' }
+              { 
+                icon: '📚', 
+                title: 'Smart Study Plans', 
+                desc: 'AI-powered scheduling that adapts to your learning style and creates personalized study roadmaps.', 
+                gradient: 'from-[#A3BFFA] to-[#8AC6D1]',
+                clickable: true,
+                action: 'planner'
+              },
+              { 
+                icon: '✏️', 
+                title: 'Organized Notes', 
+                desc: 'Rich text editor with tagging, search, and PDF export. Keep all materials in one place.', 
+                gradient: 'from-[#FF9A8B] to-[#FFD6A5]',
+                clickable: false
+              },
+              { 
+                icon: '⏰', 
+                title: 'Focus Timers', 
+                desc: 'Pomodoro technique with smart breaks. Custom alarms keep you on track without stress.', 
+                gradient: 'from-[#DFF6F0] to-[#8AC6D1]',
+                clickable: false
+              },
+              { 
+                icon: '🎯', 
+                title: 'Goal Tracking', 
+                desc: 'Set milestones, track progress, and celebrate achievements. Build streaks and earn badges.', 
+                gradient: 'from-[#E8DFF5] to-[#A3BFFA]',
+                clickable: false
+              },
+              { 
+                icon: '📊', 
+                title: 'Visual Analytics', 
+                desc: 'Understand your study patterns with beautiful charts. Discover your peak productivity times.', 
+                gradient: 'from-[#A3BFFA] to-[#E9F0FF]',
+                clickable: false
+              },
+              { 
+                icon: '🌟', 
+                title: 'Daily Motivation', 
+                desc: 'Start each day inspired with quotes and connect with a supportive community of learners.', 
+                gradient: 'from-[#FFD6A5] to-[#FF9A8B]',
+                clickable: false
+              }
             ].map((feature, idx) => (
               <div
                 key={idx}
-                className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group"
+                onClick={() => feature.clickable && handleFeatureClick(feature.action)}
+                className={`bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group relative ${
+                  feature.clickable ? 'cursor-pointer' : ''
+                }`}
               >
                 <div className={`w-16 h-16 bg-gradient-to-br ${feature.gradient} rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform`}>
                   {feature.icon}
                 </div>
-                <h3 className="text-xl font-bold mb-3 text-gray-800">{feature.title}</h3>
+                <h3 className="text-xl font-bold mb-3 text-gray-800 flex items-center justify-between">
+                  {feature.title}
+                  {feature.clickable && (
+                    <ArrowRight 
+                      size={20} 
+                      className="text-[#8AC6D1] opacity-0 group-hover:opacity-100 transform translate-x-0 group-hover:translate-x-1 transition-all" 
+                    />
+                  )}
+                </h3>
                 <p className="text-gray-600 leading-relaxed">{feature.desc}</p>
+                
+                {feature.clickable && (
+                  <div className="mt-4 text-sm font-semibold text-[#8AC6D1] flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    Try it now 
+                    <ArrowRight size={16} />
+                  </div>
+                )}
               </div>
             ))}
           </div>
