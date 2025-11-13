@@ -199,97 +199,102 @@ export default function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-20 px-4 sm:px-6 lg:px-8 bg-[#F7F9FC] dark:bg-gradient-to-b dark:from-transparent dark:to-black/30 transition-colors">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-800 dark:text-transparent dark:bg-gradient-to-r dark:from-[#3b82f6] dark:to-[#ec4899] dark:bg-clip-text">Everything You Need to Excel</h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300">Powerful features designed for modern students</p>
+<section id="features" className="py-20 px-4 sm:px-6 lg:px-8 bg-[#F7F9FC] dark:bg-[#0f172a] transition-colors">
+  <div className="max-w-7xl mx-auto">
+    <div className="text-center mb-16">
+      <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-800 dark:text-white">
+        <span className="dark:bg-gradient-to-r dark:from-[#3b82f6] dark:to-[#ec4899] dark:bg-clip-text dark:text-transparent">
+          Everything You Need to Excel
+        </span>
+        <span className="dark:hidden">Everything You Need to Excel</span>
+      </h2>
+      <p className="text-lg text-gray-600 dark:text-gray-300">Powerful features designed for modern students</p>
+    </div>
+    
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {[
+        { 
+          icon: '📚', 
+          title: 'Smart Study Plans', 
+          desc: 'AI-powered scheduling that adapts to your learning style and creates personalized study roadmaps.', 
+          gradient: 'from-[#A3BFFA] to-[#8AC6D1]',
+          darkGradient: 'dark:from-[#3b82f6]/30 dark:to-[#3b82f6]/10',
+          clickable: true,
+          action: 'planner'
+        },
+        { 
+          icon: '✏️', 
+          title: 'Organized Notes', 
+          desc: 'Rich text editor with tagging, search, and PDF export. Keep all materials in one place.', 
+          gradient: 'from-[#FF9A8B] to-[#FFD6A5]',
+          darkGradient: 'dark:from-[#ec4899]/30 dark:to-[#ec4899]/10',
+          clickable: false
+        },
+        { 
+          icon: '⏰', 
+          title: 'Focus Timers', 
+          desc: 'Pomodoro technique with smart breaks. Custom alarms keep you on track without stress.', 
+          gradient: 'from-[#DFF6F0] to-[#8AC6D1]',
+          darkGradient: 'dark:from-[#8b5cf6]/30 dark:to-[#8b5cf6]/10',
+          clickable: false
+        },
+        { 
+          icon: '🎯', 
+          title: 'Goal Tracking', 
+          desc: 'Set milestones, track progress, and celebrate achievements. Build streaks and earn badges.', 
+          gradient: 'from-[#E8DFF5] to-[#A3BFFA]',
+          darkGradient: 'dark:from-[#22d3ee]/30 dark:to-[#22d3ee]/10',
+          clickable: false
+        },
+        { 
+          icon: '📊', 
+          title: 'Visual Analytics', 
+          desc: 'Understand your study patterns with beautiful charts. Discover your peak productivity times.', 
+          gradient: 'from-[#A3BFFA] to-[#E9F0FF]',
+          darkGradient: 'dark:from-[#3b82f6]/30 dark:to-[#3b82f6]/10',
+          clickable: false
+        },
+        { 
+          icon: '🌟', 
+          title: 'Daily Motivation', 
+          desc: 'Start each day inspired with quotes and connect with a supportive community of learners.', 
+          gradient: 'from-[#FFD6A5] to-[#FF9A8B]',
+          darkGradient: 'dark:from-[#ec4899]/30 dark:to-[#ec4899]/10',
+          clickable: false
+        }
+      ].map((feature, idx) => (
+        <div
+          key={idx}
+          onClick={() => feature.clickable && handleFeatureClick(feature.action)}
+          className={`bg-white dark:bg-[#1e1b4b] dark:border dark:border-white/10 rounded-2xl p-8 shadow-lg hover:shadow-xl dark:hover:bg-[#1e1b4b]/80 dark:hover:border-[#3b82f6]/50 dark:hover:shadow-[0_0_40px_rgba(59,130,246,0.3)] transition-all duration-300 hover:-translate-y-2 group relative ${
+            feature.clickable ? 'cursor-pointer' : ''
+          }`}
+        >
+          <div className={`w-16 h-16 bg-gradient-to-br ${feature.gradient} ${feature.darkGradient} rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 dark:shadow-lg dark:group-hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] transition-all`}>
+            {feature.icon}
           </div>
+          <h3 className="text-xl font-bold mb-3 text-gray-800 dark:text-white flex items-center justify-between">
+            {feature.title}
+            {feature.clickable && (
+              <ArrowRight 
+                size={20} 
+                className="text-[#8AC6D1] dark:text-[#3b82f6] opacity-0 group-hover:opacity-100 transform translate-x-0 group-hover:translate-x-1 transition-all" 
+              />
+            )}
+          </h3>
+          <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{feature.desc}</p>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              { 
-                icon: '📚', 
-                title: 'Smart Study Plans', 
-                desc: 'AI-powered scheduling that adapts to your learning style and creates personalized study roadmaps.', 
-                gradient: 'from-[#A3BFFA] to-[#8AC6D1]',
-                darkGradient: 'dark:from-[#3b82f6]',
-                clickable: true,
-                action: 'planner'
-              },
-              { 
-                icon: '✏️', 
-                title: 'Organized Notes', 
-                desc: 'Rich text editor with tagging, search, and PDF export. Keep all materials in one place.', 
-                gradient: 'from-[#FF9A8B] to-[#FFD6A5]',
-                darkGradient: 'dark:from-[#ec4899]',
-                clickable: false
-              },
-              { 
-                icon: '⏰', 
-                title: 'Focus Timers', 
-                desc: 'Pomodoro technique with smart breaks. Custom alarms keep you on track without stress.', 
-                gradient: 'from-[#DFF6F0] to-[#8AC6D1]',
-                darkGradient: 'dark:from-[#8b5cf6]',
-                clickable: false
-              },
-              { 
-                icon: '🎯', 
-                title: 'Goal Tracking', 
-                desc: 'Set milestones, track progress, and celebrate achievements. Build streaks and earn badges.', 
-                gradient: 'from-[#E8DFF5] to-[#A3BFFA]',
-                darkGradient: 'dark:from-[#22d3ee]',
-                clickable: false
-              },
-              { 
-                icon: '📊', 
-                title: 'Visual Analytics', 
-                desc: 'Understand your study patterns with beautiful charts. Discover your peak productivity times.', 
-                gradient: 'from-[#A3BFFA] to-[#E9F0FF]',
-                darkGradient: 'dark:from-[#3b82f6]',
-                clickable: false
-              },
-              { 
-                icon: '🌟', 
-                title: 'Daily Motivation', 
-                desc: 'Start each day inspired with quotes and connect with a supportive community of learners.', 
-                gradient: 'from-[#FFD6A5] to-[#FF9A8B]',
-                darkGradient: 'dark:from-[#ec4899]',
-                clickable: false
-              }
-            ].map((feature, idx) => (
-              <div
-                key={idx}
-                onClick={() => feature.clickable && handleFeatureClick(feature.action)}
-                className={`bg-white dark:bg-white/5 dark:backdrop-blur-md dark:border dark:border-white/10 rounded-2xl p-8 shadow-lg hover:shadow-xl dark:hover:bg-white/10 dark:hover:border-white/20 dark:hover:shadow-[0_0_40px_rgba(59,130,246,0.2)] transition-all duration-300 hover:-translate-y-2 group relative ${
-                  feature.clickable ? 'cursor-pointer' : ''
-                }`}
-              >
-                <div className={`w-16 h-16 bg-gradient-to-br ${feature.gradient} ${feature.darkGradient} dark:to-transparent rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 dark:group-hover:shadow-[0_0_30px_rgba(59,130,246,0.4)] transition-all`}>
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl font-bold mb-3 text-gray-800 dark:text-gray-100 flex items-center justify-between">
-                  {feature.title}
-                  {feature.clickable && (
-                    <ArrowRight 
-                      size={20} 
-                      className="text-[#8AC6D1] dark:text-[#3b82f6] opacity-0 group-hover:opacity-100 transform translate-x-0 group-hover:translate-x-1 transition-all" 
-                    />
-                  )}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{feature.desc}</p>
-                
-                {feature.clickable && (
-                  <div className="mt-4 text-sm font-semibold text-[#8AC6D1] dark:text-[#3b82f6] flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                    Try it now 
-                    <ArrowRight size={16} />
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+          {feature.clickable && (
+            <div className="mt-4 text-sm font-semibold text-[#8AC6D1] dark:text-[#3b82f6] flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+              Try it now 
+              <ArrowRight size={16} />
+            </div>
+          )}
         </div>
-      </section>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* CTA Section */}
       <section id="about" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-[#A3BFFA] to-[#8AC6D1] dark:from-[#3b82f6] dark:via-[#ec4899] dark:to-[#8b5cf6] text-white transition-colors relative overflow-hidden">
