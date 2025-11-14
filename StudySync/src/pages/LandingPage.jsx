@@ -168,32 +168,35 @@ export default function LandingPage() {
             </div>
 
             {/* Dashboard Mockup */}
-            <div className="relative">
-              <div className="bg-white dark:bg-white/10 dark:backdrop-blur-lg dark:border dark:border-white/10 rounded-2xl shadow-2xl dark:shadow-[0_0_50px_rgba(59,130,246,0.3)] p-6 transform hover:rotate-0 transition-all duration-300 dark:hover:shadow-[0_0_80px_rgba(236,72,153,0.4)]" style={{ transform: 'perspective(1000px) rotateY(-5deg)' }}>
-                <div className="flex gap-2 mb-4">
-                  <div className="w-3 h-3 rounded-full bg-red-400" />
-                  <div className="w-3 h-3 rounded-full bg-yellow-400" />
-                  <div className="w-3 h-3 rounded-full bg-green-400" />
-                </div>
-                <div className="bg-gradient-to-r from-[#A3BFFA] to-[#8AC6D1] dark:from-[#3b82f6] dark:to-[#ec4899] rounded-xl p-4 text-white mb-4 dark:shadow-[0_0_30px_rgba(59,130,246,0.4)]">
-                  <h3 className="font-semibold mb-2">Today's Progress</h3>
-                  <p className="text-sm opacity-90 mb-2">4 hours studied • 75% complete</p>
-                  <div className="bg-white/30 dark:bg-white/20 h-2 rounded-full overflow-hidden dark:backdrop-blur-sm">
-                    <div className="bg-white h-full rounded-full dark:shadow-[0_0_10px_rgba(255,255,255,0.5)]" style={{ width: '75%', animation: 'fillProgress 2s ease forwards' }} />
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-[#E9F0FF] dark:bg-gradient-to-br dark:from-[#3b82f6]/20 dark:to-[#3b82f6]/10 dark:backdrop-blur-md dark:border dark:border-[#3b82f6]/30 rounded-lg p-4 text-center dark:hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all">
-                    <div className="text-3xl font-bold text-[#8AC6D1] dark:text-[#3b82f6]">12</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-300">Day Streak</div>
-                  </div>
-                  <div className="bg-[#FFE9D6] dark:bg-gradient-to-br dark:from-[#ec4899]/20 dark:to-[#ec4899]/10 dark:backdrop-blur-md dark:border dark:border-[#ec4899]/30 rounded-lg p-4 text-center dark:hover:shadow-[0_0_20px_rgba(236,72,153,0.3)] transition-all">
-                    <div className="text-3xl font-bold text-[#FF9A8B] dark:text-[#ec4899]">8</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-300">Goals Done</div>
-                  </div>
-                </div>
-              </div>
-            </div>
+<div className="relative">
+  <div className="bg-white dark:bg-[#1e1b4b] dark:border dark:border-white/20 rounded-2xl shadow-2xl dark:shadow-[0_0_50px_rgba(59,130,246,0.3)] p-6 transform hover:rotate-0 transition-all duration-300 dark:hover:shadow-[0_0_80px_rgba(236,72,153,0.4)]" style={{ transform: 'perspective(1000px) rotateY(-5deg)' }}>
+    <div className="flex gap-2 mb-4">
+      <div className="w-3 h-3 rounded-full bg-red-400" />
+      <div className="w-3 h-3 rounded-full bg-yellow-400" />
+      <div className="w-3 h-3 rounded-full bg-green-400" />
+    </div>
+    <div className="bg-gradient-to-r from-[#A3BFFA] to-[#8AC6D1] dark:from-[#3b82f6] dark:to-[#ec4899] rounded-xl p-4 text-white mb-4 dark:shadow-[0_0_30px_rgba(59,130,246,0.4)]">
+      <h3 className="font-semibold mb-2">Today's Progress</h3>
+      <p className="text-sm opacity-90 mb-2">4 hours studied • 75% complete</p>
+      <div className="bg-white/30 dark:bg-white/20 h-2 rounded-full overflow-hidden dark:backdrop-blur-sm">
+        <div className="bg-white h-full rounded-full dark:shadow-[0_0_10px_rgba(255,255,255,0.5)]" style={{ width: '75%', animation: 'fillProgress 2s ease forwards' }} />
+      </div>
+    </div>
+    <div className="grid grid-cols-2 gap-4">
+      {/* Day Streak Card */}
+      <div className="bg-[#E9F0FF] dark:bg-gradient-to-br dark:from-[#3b82f6]/30 dark:to-[#1e1b4b] dark:border dark:border-[#3b82f6]/40 rounded-lg p-4 text-center dark:hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] transition-all">
+        <div className="text-3xl font-bold text-[#8AC6D1] dark:text-[#3b82f6]">12</div>
+        <div className="text-sm text-gray-600 dark:text-gray-300">Day Streak</div>
+      </div>
+      
+      {/* Goals Done Card */}
+      <div className="bg-[#FFE9D6] dark:bg-gradient-to-br dark:from-[#ec4899]/30 dark:to-[#1e1b4b] dark:border dark:border-[#ec4899]/40 rounded-lg p-4 text-center dark:hover:shadow-[0_0_20px_rgba(236,72,153,0.4)] transition-all">
+        <div className="text-3xl font-bold text-[#FF9A8B] dark:text-[#ec4899]">8</div>
+        <div className="text-sm text-gray-600 dark:text-gray-300">Goals Done</div>
+      </div>
+    </div>
+  </div>
+</div>
           </div>
         </div>
       </section>
