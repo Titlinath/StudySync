@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { X, Save, Tag as TagIcon, BookOpen } from 'lucide-react';
 import { motion } from 'framer-motion';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
+
 import TagInput from './TagInput';
+
 
 export default function NoteEditor({ note, onSave, onClose }) {
   const [title, setTitle] = useState('');

@@ -31,9 +31,9 @@ export default function LandingPage() {
   const handleFeatureClick = (featureType) => {
     const token = localStorage.getItem('token');
     
-    if (featureType === 'planner') {
+    if (featureType === 'planner' || featureType === 'notes') {
       if (token) {
-        navigate('/planner');
+        navigate(`/${featureType}`);
       } else {
         navigate('/auth?mode=register');
       }
