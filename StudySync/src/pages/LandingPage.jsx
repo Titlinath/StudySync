@@ -231,7 +231,8 @@ export default function LandingPage() {
           desc: 'Rich text editor with tagging, search, and PDF export. Keep all materials in one place.', 
           gradient: 'from-[#FF9A8B] to-[#FFD6A5]',
           darkGradient: 'dark:from-[#ec4899]/30 dark:to-[#ec4899]/10',
-          clickable: false
+          clickable: true,
+          action: 'notes'
         },
         { 
           icon: '⏰', 

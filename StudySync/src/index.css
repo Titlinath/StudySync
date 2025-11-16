@@ -30,3 +30,42 @@
 ::-webkit-scrollbar-thumb:hover {
   @apply from-[#6BA9B5] to-[#8AA8E8] dark:from-[#2563eb] dark:to-[#db2777];
 }
+
+/* Quill Editor Dark Mode Support */
+.dark .ql-toolbar {
+  @apply bg-white/5 border-white/10;
+}
+
+.dark .ql-container {
+  @apply bg-white/5 border-white/10;
+}
+
+.dark .ql-editor {
+  @apply text-gray-100;
+}
+
+.dark .ql-editor.ql-blank::before {
+  @apply text-gray-500;
+}
+
+.dark .ql-snow .ql-stroke {
+  stroke: #d1d5db;
+}
+
+.dark .ql-snow .ql-fill {
+  fill: #d1d5db;
+}
+
+.dark .ql-snow .ql-picker-label {
+  @apply text-gray-300;
+}
+
+/* Make Quill editor taller */
+.ql-container {
+  min-height: 300px;
+  font-size: 15px;
+}
+
+.ql-editor {
+  min-height: 300px;
+}
