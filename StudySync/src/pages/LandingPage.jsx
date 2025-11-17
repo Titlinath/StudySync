@@ -31,7 +31,7 @@ export default function LandingPage() {
   const handleFeatureClick = (featureType) => {
     const token = localStorage.getItem('token');
     
-    if (featureType === 'planner' || featureType === 'notes') {
+    if (featureType === 'planner' || featureType === 'notes' || featureType === 'focus-timer') {
       if (token) {
         navigate(`/${featureType}`);
       } else {
@@ -240,7 +240,8 @@ export default function LandingPage() {
           desc: 'Pomodoro technique with smart breaks. Custom alarms keep you on track without stress.', 
           gradient: 'from-[#DFF6F0] to-[#8AC6D1]',
           darkGradient: 'dark:from-[#8b5cf6]/30 dark:to-[#8b5cf6]/10',
-          clickable: false
+          clickable: true,
+          action: 'focus-timer'
         },
         { 
           icon: '🎯', 

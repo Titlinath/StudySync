@@ -5,6 +5,7 @@ import AuthPage from './pages/AuthPage';
 import Dashboard from './pages/Dashboard';
 import SmartStudyPlanner from './pages/SmartStudyPlanner';
 import NotesPage from './pages/NotesPage';
+import FocusTimerPage from './pages/FocusTimerPage'; 
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -37,6 +38,14 @@ function App() {
           element={
             <ProtectedRoute>
               <NotesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/focus-timer"
+          element={
+            <ProtectedRoute>
+              <FocusTimerPage />
             </ProtectedRoute>
           }
         />
