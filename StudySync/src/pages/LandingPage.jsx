@@ -31,7 +31,7 @@ export default function LandingPage() {
   const handleFeatureClick = (featureType) => {
     const token = localStorage.getItem('token');
     
-    if (featureType === 'planner' || featureType === 'notes' || featureType === 'focus-timer') {
+    if (featureType === 'planner' || featureType === 'notes' || featureType === 'focus-timer' || featureType === 'goals' || featureType === 'analytics') {
       if (token) {
         navigate(`/${featureType}`);
       } else {
@@ -249,7 +249,8 @@ export default function LandingPage() {
           desc: 'Set milestones, track progress, and celebrate achievements. Build streaks and earn badges.', 
           gradient: 'from-[#E8DFF5] to-[#A3BFFA]',
           darkGradient: 'dark:from-[#22d3ee]/30 dark:to-[#22d3ee]/10',
-          clickable: false
+          clickable: true,
+          action: 'goals'
         },
         { 
           icon: '📊', 
@@ -257,7 +258,8 @@ export default function LandingPage() {
           desc: 'Understand your study patterns with beautiful charts. Discover your peak productivity times.', 
           gradient: 'from-[#A3BFFA] to-[#E9F0FF]',
           darkGradient: 'dark:from-[#3b82f6]/30 dark:to-[#3b82f6]/10',
-          clickable: false
+          clickable: true,
+          action: 'analytics'
         },
         { 
           icon: '🌟', 

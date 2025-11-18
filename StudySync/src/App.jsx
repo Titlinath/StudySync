@@ -5,7 +5,9 @@ import AuthPage from './pages/AuthPage';
 import Dashboard from './pages/Dashboard';
 import SmartStudyPlanner from './pages/SmartStudyPlanner';
 import NotesPage from './pages/NotesPage';
-import FocusTimerPage from './pages/FocusTimerPage'; 
+import FocusTimerPage from './pages/FocusTimerPage';
+import GoalTrackingPage from './pages/GoalTrackingPage';
+import AnalyticsPage from './pages/AnalyticsPage';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -46,6 +48,22 @@ function App() {
           element={
             <ProtectedRoute>
               <FocusTimerPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/goals"
+          element={
+            <ProtectedRoute>
+              <GoalTrackingPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/analytics"
+          element={
+            <ProtectedRoute>
+              <AnalyticsPage />
             </ProtectedRoute>
           }
         />
