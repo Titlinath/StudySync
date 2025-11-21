@@ -27,13 +27,13 @@ export default function QuoteCard({ quote, loading }) {
   const getModeLabel = () => {
     switch (quote.mode) {
       case 'focus':
-        return { text: 'Focus Mode', bg: 'bg-orange-100 dark:bg-orange-500/20', text: 'text-orange-600 dark:text-orange-400' };
+        return { label: 'Focus Mode', bg: 'bg-orange-100 dark:bg-orange-500/20', textColor: 'text-orange-600 dark:text-orange-400' };
       case 'calm':
-        return { text: 'Calm Mode', bg: 'bg-pink-100 dark:bg-pink-500/20', text: 'text-pink-600 dark:text-pink-400' };
+        return { label: 'Calm Mode', bg: 'bg-pink-100 dark:bg-pink-500/20', textColor: 'text-pink-600 dark:text-pink-400' };
       case 'accountability':
-        return { text: 'Accountability Mode', bg: 'bg-green-100 dark:bg-green-500/20', text: 'text-green-600 dark:text-green-400' };
+        return { label: 'Accountability Mode', bg: 'bg-green-100 dark:bg-green-500/20', textColor: 'text-green-600 dark:text-green-400' };
       default:
-        return { text: 'Daily Wisdom', bg: 'bg-purple-100 dark:bg-purple-500/20', text: 'text-purple-600 dark:text-purple-400' };
+        return { label: 'Daily Wisdom', bg: 'bg-purple-100 dark:bg-purple-500/20', textColor: 'text-purple-600 dark:text-purple-400' };
     }
   };
 
@@ -54,8 +54,8 @@ export default function QuoteCard({ quote, loading }) {
         <div className="flex items-center justify-between mb-6">
           <div className={`flex items-center gap-2 px-4 py-2 ${modeLabel.bg} rounded-full`}>
             {getModeIcon()}
-            <span className={`text-sm font-semibold ${modeLabel.text}`}>
-              {modeLabel.text}
+            <span className={`text-sm font-semibold ${modeLabel.textColor}`}>
+              {modeLabel.label}
             </span>
           </div>
           

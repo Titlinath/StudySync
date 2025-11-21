@@ -31,7 +31,7 @@ export default function LandingPage() {
   const handleFeatureClick = (featureType) => {
     const token = localStorage.getItem('token');
     
-    if (featureType === 'planner' || featureType === 'notes' || featureType === 'focus-timer' || featureType === 'goals' || featureType === 'analytics') {
+    if (featureType === 'planner' || featureType === 'notes' || featureType === 'focus-timer' || featureType === 'goals' || featureType === 'analytics' || featureType === 'motivation') {
       if (token) {
         navigate(`/${featureType}`);
       } else {
@@ -267,7 +267,8 @@ export default function LandingPage() {
           desc: 'Start each day inspired with quotes and connect with a supportive community of learners.', 
           gradient: 'from-[#FFD6A5] to-[#FF9A8B]',
           darkGradient: 'dark:from-[#ec4899]/30 dark:to-[#ec4899]/10',
-          clickable: false
+          clickable: true,
+          action: 'motivation'
         }
       ].map((feature, idx) => (
         <div

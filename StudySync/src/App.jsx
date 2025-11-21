@@ -8,6 +8,7 @@ import NotesPage from './pages/NotesPage';
 import FocusTimerPage from './pages/FocusTimerPage';
 import GoalTrackingPage from './pages/GoalTrackingPage';
 import AnalyticsPage from './pages/AnalyticsPage';
+import DailyMotivationPage from './pages/DailyMotivationPage';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -64,6 +65,14 @@ function App() {
           element={
             <ProtectedRoute>
               <AnalyticsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/motivation"
+          element={
+            <ProtectedRoute>
+              <DailyMotivationPage />
             </ProtectedRoute>
           }
         />
