@@ -2,11 +2,19 @@
   "version": 2,
   "builds": [
     {
-      "src": "StudySync/index.html",
+      "src": "server/index.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "StudySync/**",
       "use": "@vercel/static"
     }
   ],
   "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "server/index.js"
+    },
     {
       "src": "/(.*)",
       "dest": "/StudySync/index.html"
