@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LogOut, Calendar, BookOpen, Target, TrendingUp } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 export default function Dashboard() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const { theme } = useTheme();
 
   useEffect(() => {
     const userData = localStorage.getItem('user');
@@ -20,19 +22,19 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#E9F0FF] to-[#DFF6F0]">
+    <div className="min-h-screen bg-gradient-to-br from-[#E9F0FF] to-[#DFF6F0] dark:from-gray-900 dark:to-gray-800">
       {/* Navbar */}
-      <nav className="bg-white shadow-md">
+      <nav className="bg-white dark:bg-gray-800 shadow-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <h1 className="text-2xl font-bold bg-gradient-to-r from-[#8AC6D1] to-[#A3BFFA] bg-clip-text text-transparent">
               StudySync
             </h1>
             <div className="flex items-center gap-4">
-              <span className="text-gray-700">Welcome, {user?.name}!</span>
+              <span className="text-gray-700 dark:text-gray-300">Welcome, {user?.name}!</span>
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-2 px-4 py-2 bg-red-50 hover:bg-red-100 border border-red-200 text-red-600 rounded-lg transition-all"
+                className="flex items-center gap-2 px-4 py-2 bg-red-50 hover:bg-red-100 dark:bg-red-900/30 dark:hover:bg-red-900/50 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 rounded-lg transition-all"
               >
                 <LogOut size={18} />
                 Logout
@@ -44,7 +46,7 @@ export default function Dashboard() {
 
       {/* Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h2 className="text-3xl font-bold text-gray-800 mb-8">Dashboard</h2>
+        <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-8">Dashboard</h2>
         
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {[
@@ -55,20 +57,20 @@ export default function Dashboard() {
           ].map((stat, idx) => (
             <div
               key={idx}
-              className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all"
+              className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md hover:shadow-lg transition-all"
             >
               <div className={`w-12 h-12 bg-gradient-to-br ${stat.gradient} rounded-lg flex items-center justify-center mb-4`}>
                 <stat.icon size={24} className="text-white" />
               </div>
-              <p className="text-gray-600 text-sm">{stat.label}</p>
-              <p className="text-3xl font-bold text-gray-800 mt-2">{stat.value}</p>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">{stat.label}</p>
+              <p className="text-3xl font-bold text-gray-800 dark:text-white mt-2">{stat.value}</p>
             </div>
           ))}
         </div>
 
         <button
           onClick={() => navigate('/planner')}
-          className="px-8 py-3 bg-gradient-to-r from-[#8AC6D1] to-[#A3BFFA] text-white rounded-lg font-semibold hover:shadow-lg transition-all"
+          className="px-8 py-3 bg-gradient-to-r from-[#8AC6D1] to-[#A3BFFA] text-white rounded-lg font-semibold hover:shadow-lg transition-all dark:text-gray-900"
         >
           Go to Study Planner
         </button>
