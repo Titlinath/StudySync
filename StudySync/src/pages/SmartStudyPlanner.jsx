@@ -7,8 +7,10 @@ import DailyPlanTimeline from "../components/Planner/DailyPlanTimeline";
 import MotivationBox from "../components/Planner/MotivationBox";
 import EmptyState from "../components/Planner/EmptyState";
 import { getSubjectColor } from "../utils/colorUtils";
+import { useTheme } from "../context/ThemeContext";
 
 export default function SmartStudyPlanner() {
+  const { theme } = useTheme();
   const [subjects, setSubjects] = useState([]);
   const [generatedPlan, setGeneratedPlan] = useState(null);
   const [availableHoursPerDay, setAvailableHoursPerDay] = useState(4);
@@ -97,16 +99,16 @@ export default function SmartStudyPlanner() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#E9F0FF] to-[#DFF6F0] p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-[#E9F0FF] to-[#DFF6F0] dark:from-gray-900 dark:to-gray-800 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-6">
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div>
-              <h1 className="text-3xl font-bold text-gray-800 mb-2">
+              <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">
                 📅 Smart Study Planner
               </h1>
-              <p className="text-gray-600">
+              <p className="text-gray-600 dark:text-gray-400">
                 AI-powered schedule optimization for your academic success
               </p>
             </div>
@@ -159,7 +161,7 @@ export default function SmartStudyPlanner() {
           >
             {/* Subject List */}
             {subjects.length > 0 && (
-              <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-6">
                 <SubjectList
                   subjects={subjects}
                   setSubjects={setSubjects}
@@ -179,7 +181,7 @@ export default function SmartStudyPlanner() {
 
             {/* Empty State */}
             {subjects.length === 0 && !generatedPlan && (
-              <div className="bg-white rounded-2xl shadow-lg p-12 text-center">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-12 text-center">
                 <EmptyState />
               </div>
             )}
