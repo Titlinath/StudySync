@@ -1,0 +1,241 @@
+.tour-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 9997;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.tour-overlay.visible {
+  opacity: 1;
+}
+
+.tour-tooltip {
+  position: fixed;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20px;
+  padding: 28px;
+  max-width: 450px;
+  width: 90%;
+  z-index: 9998;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  color: white;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.tour-tooltip.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Position variations */
+.tooltip-center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+}
+
+.tooltip-center.visible {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.tooltip-top {
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -20px) scale(0.9);
+}
+
+.tooltip-top.visible {
+  transform: translate(-50%, 0) scale(1);
+}
+
+.tooltip-bottom {
+  bottom: 10%;
+  left: 50%;
+  transform: translate(-50%, 20px) scale(0.9);
+}
+
+.tooltip-bottom.visible {
+  transform: translate(-50%, 0) scale(1);
+}
+
+.tour-header {
+  margin-bottom: 20px;
+}
+
+.tour-progress {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tour-step-count {
+  font-size: 14px;
+  font-weight: 600;
+  opacity: 0.9;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 6px 12px;
+  border-radius: 20px;
+}
+
+.tour-skip {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+  font-weight: 500;
+}
+
+.tour-skip:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+.tour-content {
+  margin-bottom: 24px;
+}
+
+.tour-title {
+  font-size: 28px;
+  font-weight: 800;
+  margin: 0 0 12px 0;
+  line-height: 1.2;
+}
+
+.tour-description {
+  font-size: 16px;
+  opacity: 0.95;
+  line-height: 1.5;
+  margin: 0;
+  font-weight: 400;
+}
+
+.tour-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tour-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.tour-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.tour-dot.active {
+  width: 24px;
+  border-radius: 4px;
+  background: white;
+}
+
+.tour-dot.completed {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.tour-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.tour-btn {
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.tour-btn-back {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.tour-btn-back:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateX(-2px);
+}
+
+.tour-btn-next {
+  background: white;
+  color: #667eea;
+  flex: 1;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.tour-btn-next:hover {
+  background: #f0f0f0;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Pulse animation for attention */
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  }
+  50% {
+    box-shadow: 0 20px 60px rgba(102, 126, 234, 0.6);
+  }
+}
+
+.tour-tooltip.visible {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .tour-tooltip {
+    padding: 24px;
+    max-width: 90%;
+  }
+
+  .tour-title {
+    font-size: 24px;
+  }
+
+  .tour-description {
+    font-size: 15px;
+  }
+
+  .tour-actions {
+    flex-direction: column;
+  }
+
+  .tour-btn {
+    width: 100%;
+  }
+
+  .tooltip-center {
+    top: auto;
+    bottom: 20px;
+    left: 50%;
+    transform: translate(-50%, 20px) scale(0.9);
+  }
+
+  .tooltip-center.visible {
+    transform: translate(-50%, 0) scale(1);
+  }
+}
