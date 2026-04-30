@@ -61,10 +61,10 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#E9F0FF] to-[#DFF6F0] flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-[#E9F0FF] to-[#DFF6F0] dark:from-[#0f172a] dark:via-[#1e1b4b] dark:to-[#312e81] flex items-center justify-center p-4 relative overflow-hidden">
       {/* Animated Background Orbs */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-radial from-[#8AC6D1]/20 to-transparent rounded-full blur-3xl" style={{ animation: 'float 8s ease-in-out infinite' }} />
-      <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-radial from-[#A3BFFA]/20 to-transparent rounded-full blur-3xl" style={{ animation: 'float 10s ease-in-out infinite reverse' }} />
+      <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-radial from-[#8AC6D1]/20 to-transparent rounded-full blur-3xl dark:from-[#3b82f6]/20" style={{ animation: 'float 8s ease-in-out infinite' }} />
+      <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-radial from-[#A3BFFA]/20 to-transparent rounded-full blur-3xl dark:from-[#ec4899]/20" style={{ animation: 'float 10s ease-in-out infinite reverse' }} />
 
       <div className="w-full max-w-md relative z-10">
         {/* Logo */}
@@ -72,19 +72,19 @@ export default function AuthPage() {
           <h1 className="text-4xl font-bold bg-gradient-to-r from-[#8AC6D1] via-[#A3BFFA] to-[#FF9A8B] bg-clip-text text-transparent mb-2">
             StudySync
           </h1>
-          <p className="text-gray-600">Your intelligent study companion</p>
+          <p className="text-gray-600 dark:text-gray-300">Your intelligent study companion</p>
         </div>
 
         {/* Auth Card */}
-        <div className="bg-white rounded-2xl p-8 shadow-2xl">
+        <div className="bg-white dark:bg-[#111827] dark:border dark:border-white/10 rounded-2xl p-8 shadow-2xl">
           {/* Tab Switcher */}
-          <div className="flex bg-gray-100 rounded-xl p-1 mb-6">
+          <div className="flex bg-gray-100 dark:bg-white/10 rounded-xl p-1 mb-6">
             <button
               onClick={() => setIsLogin(true)}
               className={`flex-1 py-2 px-4 rounded-lg font-semibold transition-all ${
                 isLogin
                   ? 'bg-gradient-to-r from-[#8AC6D1] to-[#A3BFFA] text-white shadow-lg'
-                  : 'text-gray-600 hover:text-gray-800'
+                  : 'text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white'
               }`}
             >
               Login
@@ -94,7 +94,7 @@ export default function AuthPage() {
               className={`flex-1 py-2 px-4 rounded-lg font-semibold transition-all ${
                 !isLogin
                   ? 'bg-gradient-to-r from-[#8AC6D1] to-[#A3BFFA] text-white shadow-lg'
-                  : 'text-gray-600 hover:text-gray-800'
+                  : 'text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white'
               }`}
             >
               Sign Up
@@ -103,7 +103,7 @@ export default function AuthPage() {
 
           {/* Error Message */}
           {error && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
+            <div className="mb-4 p-3 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 rounded-lg text-red-600 dark:text-red-200 text-sm">
               {error}
             </div>
           )}
@@ -113,7 +113,7 @@ export default function AuthPage() {
             {/* Name Field (Sign Up Only) */}
             {!isLogin && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
                   Full Name
                 </label>
                 <input
@@ -122,7 +122,7 @@ export default function AuthPage() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#8AC6D1] focus:ring-2 focus:ring-[#8AC6D1]/20 transition-all"
+                  className="w-full px-4 py-3 border-2 border-gray-200 dark:border-white/10 rounded-lg bg-white dark:bg-slate-900 text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-[#8AC6D1] focus:ring-2 focus:ring-[#8AC6D1]/20 transition-all"
                   placeholder="John Doe"
                 />
               </div>
@@ -130,7 +130,7 @@ export default function AuthPage() {
 
             {/* Email Field */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
                 Email Address
               </label>
               <input
@@ -139,14 +139,14 @@ export default function AuthPage() {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#8AC6D1] focus:ring-2 focus:ring-[#8AC6D1]/20 transition-all"
+                className="w-full px-4 py-3 border-2 border-gray-200 dark:border-white/10 rounded-lg bg-white dark:bg-slate-900 text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-[#8AC6D1] focus:ring-2 focus:ring-[#8AC6D1]/20 transition-all"
                 placeholder="you@example.com"
               />
             </div>
 
             {/* Password Field */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
                 Password
               </label>
               <div className="relative">
@@ -156,13 +156,13 @@ export default function AuthPage() {
                   value={formData.password}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#8AC6D1] focus:ring-2 focus:ring-[#8AC6D1]/20 transition-all"
+                  className="w-full px-4 py-3 border-2 border-gray-200 dark:border-white/10 rounded-lg bg-white dark:bg-slate-900 text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-[#8AC6D1] focus:ring-2 focus:ring-[#8AC6D1]/20 transition-all"
                   placeholder="••••••••"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-400 hover:text-gray-600 dark:hover:text-white transition-colors"
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
@@ -172,7 +172,7 @@ export default function AuthPage() {
             {/* Confirm Password (Sign Up Only) */}
             {!isLogin && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
                   Confirm Password
                 </label>
                 <input
@@ -181,7 +181,7 @@ export default function AuthPage() {
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#8AC6D1] focus:ring-2 focus:ring-[#8AC6D1]/20 transition-all"
+                  className="w-full px-4 py-3 border-2 border-gray-200 dark:border-white/10 rounded-lg bg-white dark:bg-slate-900 text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-[#8AC6D1] focus:ring-2 focus:ring-[#8AC6D1]/20 transition-all"
                   placeholder="••••••••"
                 />
               </div>
@@ -211,7 +211,7 @@ export default function AuthPage() {
           <div className="mt-6 text-center">
             <button
               onClick={() => navigate('/')}
-              className="text-sm text-gray-600 hover:text-[#8AC6D1] transition-colors"
+              className="text-sm text-gray-600 dark:text-gray-300 hover:text-[#8AC6D1] transition-colors"
             >
               ← Back to Home
             </button>
