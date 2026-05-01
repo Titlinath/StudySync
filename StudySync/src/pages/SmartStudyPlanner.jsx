@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Calendar, Download, Edit, Target, Clock, TrendingUp } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Calendar, Download, Edit, Target, Clock, TrendingUp, ArrowLeft } from "lucide-react";
 import StatsBar from "../components/Planner/StatsBar";
 import SubjectInputPanel from "../components/Planner/SubjectInputPanel";
 import SubjectList from "../components/Planner/SubjectList";
@@ -7,10 +8,9 @@ import DailyPlanTimeline from "../components/Planner/DailyPlanTimeline";
 import MotivationBox from "../components/Planner/MotivationBox";
 import EmptyState from "../components/Planner/EmptyState";
 import { getSubjectColor } from "../utils/colorUtils";
-import { useTheme } from "../context/ThemeContext";
 
 export default function SmartStudyPlanner() {
-  const { theme } = useTheme();
+  const navigate = useNavigate();
   const [subjects, setSubjects] = useState([]);
   const [generatedPlan, setGeneratedPlan] = useState(null);
   const [availableHoursPerDay, setAvailableHoursPerDay] = useState(4);
@@ -99,16 +99,26 @@ export default function SmartStudyPlanner() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#E9F0FF] to-[#DFF6F0] dark:from-gray-900 dark:to-gray-800 p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-[#E9F0FF] to-[#DFF6F0] dark:from-[#0f172a] dark:via-[#1e1b4b] dark:to-[#312e81] transition-colors duration-300 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
+
+        {/* Back Button - standalone above header */}
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-2 mb-4 px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white bg-white/70 dark:bg-white/5 hover:bg-white dark:hover:bg-white/10 border border-gray-200 dark:border-white/10 rounded-xl backdrop-blur-sm transition-all duration-200 group"
+        >
+          <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform duration-200" />
+          Back
+        </button>
+
         {/* Header */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-6">
+        <div className="bg-white dark:bg-white/5 dark:backdrop-blur-sm dark:border dark:border-white/10 rounded-2xl shadow-lg dark:shadow-[0_0_30px_rgba(59,130,246,0.1)] p-6 mb-6 transition-all duration-300">
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div>
-              <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">
+              <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-1">
                 📅 Smart Study Planner
               </h1>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-gray-500 dark:text-gray-400">
                 AI-powered schedule optimization for your academic success
               </p>
             </div>
@@ -117,13 +127,13 @@ export default function SmartStudyPlanner() {
                 <>
                   <button
                     onClick={() => setShowInputPanel(!showInputPanel)}
-                    className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#8AC6D1] to-[#A3BFFA] text-white rounded-lg hover:shadow-lg transition-all"
+                    className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#8AC6D1] to-[#A3BFFA] dark:from-[#3b82f6] dark:to-[#8b5cf6] text-white rounded-xl hover:shadow-lg dark:hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] hover:scale-105 transition-all duration-200 font-medium"
                   >
-                    <Edit size={18} />
+                    <Edit size={16} />
                     {showInputPanel ? "View Plan" : "Edit Subjects"}
                   </button>
-                  <button className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#FF9A8B] to-[#FFD6A5] text-white rounded-lg hover:shadow-lg transition-all">
-                    <Download size={18} />
+                  <button className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#FF9A8B] to-[#FFD6A5] dark:from-[#ec4899] dark:to-[#f97316] text-white rounded-xl hover:shadow-lg dark:hover:shadow-[0_0_20px_rgba(236,72,153,0.4)] hover:scale-105 transition-all duration-200 font-medium">
+                    <Download size={16} />
                     Export PDF
                   </button>
                 </>
@@ -134,10 +144,7 @@ export default function SmartStudyPlanner() {
 
         {/* Stats Bar */}
         {generatedPlan && (
-          <StatsBar
-            generatedPlan={generatedPlan}
-            availableHoursPerDay={availableHoursPerDay}
-          />
+          <StatsBar generatedPlan={generatedPlan} availableHoursPerDay={availableHoursPerDay} />
         )}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -154,14 +161,9 @@ export default function SmartStudyPlanner() {
           )}
 
           {/* Main Content Area */}
-          <div
-            className={
-              showInputPanel ? "lg:col-span-2" : "lg:col-span-3"
-            }
-          >
-            {/* Subject List */}
+          <div className={showInputPanel ? "lg:col-span-2" : "lg:col-span-3"}>
             {subjects.length > 0 && (
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-6">
+              <div className="bg-white dark:bg-white/5 dark:backdrop-blur-sm dark:border dark:border-white/10 rounded-2xl shadow-lg dark:shadow-[0_0_30px_rgba(139,92,246,0.1)] p-6 mb-6 transition-all duration-300">
                 <SubjectList
                   subjects={subjects}
                   setSubjects={setSubjects}
@@ -171,7 +173,6 @@ export default function SmartStudyPlanner() {
               </div>
             )}
 
-            {/* Generated Plan */}
             {generatedPlan && (
               <div className="space-y-6">
                 <MotivationBox />
@@ -179,14 +180,14 @@ export default function SmartStudyPlanner() {
               </div>
             )}
 
-            {/* Empty State */}
             {subjects.length === 0 && !generatedPlan && (
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-12 text-center">
+              <div className="bg-white dark:bg-white/5 dark:backdrop-blur-sm dark:border dark:border-white/10 rounded-2xl shadow-lg dark:shadow-[0_0_30px_rgba(59,130,246,0.1)] p-12 text-center transition-all duration-300">
                 <EmptyState />
               </div>
             )}
           </div>
         </div>
+
       </div>
     </div>
   );
