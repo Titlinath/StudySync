@@ -34,6 +34,12 @@ app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/user', require('./routes/userRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
 
+// ADD THESE NEW ROUTES:
+app.use('/api/dashboard', require('./routes/dashboardRoutes'));
+app.use('/api/study-sessions', require('./routes/studySessionRoutes'));
+app.use('/api/goals', require('./routes/goalRoutes'));
+app.use('/api/notes', require('./routes/noteRoutes'));
+
 // Health check route
 app.get('/api/health', (req, res) => {
   res.status(200).json({

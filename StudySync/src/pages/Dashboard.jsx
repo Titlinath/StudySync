@@ -2,17 +2,62 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LogOut, Calendar, BookOpen, Target, TrendingUp, ArrowRight } from 'lucide-react';
 import ThemeToggle from '../components/ThemeToggle';
+import axios from 'axios';
+
+const API_BASE_URL = 'http://localhost:5000/api';
 
 export default function Dashboard() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState({
+    activeGoals: 0,
+    streak: 0,
+    subjects: 0,
+    progress: 0,
+    todayStudyTime: 0,
+    todayStudyHours: 0,
+    todayStudyMinutes: 0,
+    todayProgress: 0
+  });
 
   useEffect(() => {
     const userData = localStorage.getItem('user');
     if (userData) {
       setUser(JSON.parse(userData));
     }
+    fetchDashboardStats();
   }, []);
+
+  const fetchDashboardStats = async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem('token');
+      
+      if (!token) {
+        navigate('/auth?mode=login');
+        return;
+      }
+
+      const response = await axios.get(`${API_BASE_URL}/dashboard/stats`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.data.success) {
+        setStats(response.data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching dashboard stats:', error);
+      // If error, keep default zero values
+      if (error.response?.status === 401) {
+        handleLogout();
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -20,11 +65,11 @@ export default function Dashboard() {
     navigate('/');
   };
 
-  const stats = [
+  const statCards = [
     {
       icon: Target,
       label: 'Active Goals',
-      value: '8',
+      value: loading ? '...' : stats.activeGoals.toString(),
       lightGradient: 'from-[#8AC6D1] to-[#A3BFFA]',
       darkGradient: 'dark:from-[#3b82f6] dark:to-[#8b5cf6]',
       darkBorder: 'dark:border-blue-500/30',
@@ -35,7 +80,7 @@ export default function Dashboard() {
     {
       icon: Calendar,
       label: 'Days Streak',
-      value: '12',
+      value: loading ? '...' : stats.streak.toString(),
       lightGradient: 'from-[#FF9A8B] to-[#FFD6A5]',
       darkGradient: 'dark:from-[#ec4899] dark:to-[#f97316]',
       darkBorder: 'dark:border-pink-500/30',
@@ -46,7 +91,7 @@ export default function Dashboard() {
     {
       icon: BookOpen,
       label: 'Subjects',
-      value: '5',
+      value: loading ? '...' : stats.subjects.toString(),
       lightGradient: 'from-[#DFF6F0] to-[#8AC6D1]',
       darkGradient: 'dark:from-[#06b6d4] dark:to-[#3b82f6]',
       darkBorder: 'dark:border-cyan-500/30',
@@ -57,7 +102,7 @@ export default function Dashboard() {
     {
       icon: TrendingUp,
       label: 'Progress',
-      value: '75%',
+      value: loading ? '...' : `${stats.progress}%`,
       lightGradient: 'from-[#E8DFF5] to-[#A3BFFA]',
       darkGradient: 'dark:from-[#8b5cf6] dark:to-[#ec4899]',
       darkBorder: 'dark:border-purple-500/30',
@@ -69,16 +114,15 @@ export default function Dashboard() {
 
   const quickLinks = [
     { label: 'Study Planner', route: '/planner', light: 'from-[#8AC6D1] to-[#A3BFFA]', dark: 'dark:from-[#3b82f6] dark:to-[#8b5cf6]' },
-    { label: 'Focus Timer',   route: '/focus-timer', light: 'from-[#FF9A8B] to-[#FFD6A5]', dark: 'dark:from-[#ec4899] dark:to-[#f97316]' },
-    { label: 'My Notes',      route: '/notes', light: 'from-[#DFF6F0] to-[#8AC6D1]', dark: 'dark:from-[#06b6d4] dark:to-[#3b82f6]' },
-    { label: 'Goals',         route: '/goals', light: 'from-[#E8DFF5] to-[#A3BFFA]', dark: 'dark:from-[#8b5cf6] dark:to-[#ec4899]' },
-    { label: 'Analytics',     route: '/analytics', light: 'from-[#FFD6A5] to-[#FF9A8B]', dark: 'dark:from-[#f97316] dark:to-[#ec4899]' },
-    { label: 'Motivation',    route: '/motivation', light: 'from-[#A3BFFA] to-[#8AC6D1]', dark: 'dark:from-[#3b82f6] dark:to-[#06b6d4]' },
+    { label: 'Focus Timer', route: '/focus-timer', light: 'from-[#FF9A8B] to-[#FFD6A5]', dark: 'dark:from-[#ec4899] dark:to-[#f97316]' },
+    { label: 'My Notes', route: '/notes', light: 'from-[#DFF6F0] to-[#8AC6D1]', dark: 'dark:from-[#06b6d4] dark:to-[#3b82f6]' },
+    { label: 'Goals', route: '/goals', light: 'from-[#E8DFF5] to-[#A3BFFA]', dark: 'dark:from-[#8b5cf6] dark:to-[#ec4899]' },
+    { label: 'Analytics', route: '/analytics', light: 'from-[#FFD6A5] to-[#FF9A8B]', dark: 'dark:from-[#f97316] dark:to-[#ec4899]' },
+    { label: 'Motivation', route: '/motivation', light: 'from-[#A3BFFA] to-[#8AC6D1]', dark: 'dark:from-[#3b82f6] dark:to-[#06b6d4]' },
   ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#E9F0FF] to-[#DFF6F0] dark:from-[#0f172a] dark:via-[#1e1b4b] dark:to-[#312e81] transition-colors duration-300">
-
       {/* Navbar */}
       <nav className="bg-white/90 dark:bg-white/5 dark:backdrop-blur-md dark:border-b dark:border-white/10 shadow-md dark:shadow-[0_0_30px_rgba(59,130,246,0.1)] transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -105,16 +149,17 @@ export default function Dashboard() {
 
       {/* Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-
         {/* Header */}
         <div className="mb-10">
           <h2 className="text-4xl font-bold text-gray-800 dark:text-white mb-2">Dashboard</h2>
-          <p className="text-gray-500 dark:text-gray-400">Here's your study overview for today.</p>
+          <p className="text-gray-500 dark:text-gray-400">
+            {loading ? 'Loading your study overview...' : "Here's your study overview for today."}
+          </p>
         </div>
 
         {/* Stat Cards */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-          {stats.map((stat, idx) => (
+          {statCards.map((stat, idx) => (
             <div
               key={idx}
               className={`
@@ -128,7 +173,9 @@ export default function Dashboard() {
                 <stat.icon size={24} className="text-white" />
               </div>
               <p className="text-gray-500 dark:text-gray-400 text-sm mb-1">{stat.label}</p>
-              <p className={`text-3xl font-bold text-gray-800 ${stat.darkText} mt-1`}>{stat.value}</p>
+              <p className={`text-3xl font-bold text-gray-800 ${stat.darkText} mt-1`}>
+                {stat.value}
+              </p>
             </div>
           ))}
         </div>
@@ -136,13 +183,27 @@ export default function Dashboard() {
         {/* Today's Progress */}
         <div className="bg-white dark:bg-white/5 dark:backdrop-blur-sm dark:border dark:border-white/10 rounded-2xl p-6 shadow-md dark:shadow-[0_0_30px_rgba(59,130,246,0.1)] mb-10 transition-all duration-300">
           <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-3">Today's Progress</h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">4 hours studied • 75% complete</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">
+            {loading 
+              ? 'Loading...' 
+              : `${stats.todayStudyHours}h ${stats.todayStudyMinutes}m studied • ${stats.todayProgress}% complete`
+            }
+          </p>
           <div className="w-full bg-gray-200 dark:bg-white/10 rounded-full h-3">
             <div
               className="h-3 rounded-full bg-gradient-to-r from-[#3b82f6] to-[#ec4899] transition-all duration-500"
-              style={{ width: '75%' }}
+              style={{ width: loading ? '0%' : `${stats.todayProgress}%` }}
             />
           </div>
+          
+          {/* Empty State Message */}
+          {!loading && stats.todayStudyTime === 0 && (
+            <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/30 rounded-lg">
+              <p className="text-sm text-blue-700 dark:text-blue-300">
+                💡 Start your first study session today! Use the Focus Timer to track your progress.
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Quick Access */}
@@ -164,7 +225,6 @@ export default function Dashboard() {
             </button>
           ))}
         </div>
-
       </div>
     </div>
   );

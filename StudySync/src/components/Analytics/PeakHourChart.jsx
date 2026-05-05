@@ -14,8 +14,47 @@ export default function PeakHourChart({ data, loading }) {
     );
   }
 
+  // EMPTY STATE - All hours show 0
+  if (!data || data.length === 0 || data.every(d => d.minutes === 0)) {
+    return (
+      <div className="bg-white dark:bg-[#1e1b4b] border-2 border-gray-200 dark:border-white/10 rounded-2xl p-6 shadow-lg">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h3 className="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-2 mb-1">
+              <Clock size={20} className="text-purple-500" />
+              Peak Study Hours
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              No study data available yet
+            </p>
+          </div>
+        </div>
+
+        <div className="text-center py-12">
+          <p className="text-gray-500 dark:text-gray-400 mb-2">
+            ⏰ Track when you study most effectively
+          </p>
+          <p className="text-sm text-gray-400 dark:text-gray-500">
+            Complete some study sessions to discover your peak hours!
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   const maxMinutes = Math.max(...data.map(d => d.minutes));
-  const peakHour = data.reduce((max, curr) => curr.minutes > max.minutes ? curr : max, data[0]);
+  const peakHour = maxMinutes > 0 
+    ? data.reduce((max, curr) => curr.minutes > max.minutes ? curr : max, data[0])
+    : null;
+
+  // Calculate time periods
+  const morningHours = data.slice(0, 6); // 6-12
+  const afternoonHours = data.slice(6, 12); // 12-18
+  const eveningHours = data.slice(12); // 18-23
+
+  const morningTotal = morningHours.reduce((sum, h) => sum + h.minutes, 0);
+  const afternoonTotal = afternoonHours.reduce((sum, h) => sum + h.minutes, 0);
+  const eveningTotal = eveningHours.reduce((sum, h) => sum + h.minutes, 0);
   
   return (
     <motion.div
@@ -36,20 +75,22 @@ export default function PeakHourChart({ data, loading }) {
           </p>
         </div>
         
-        <div className="text-right">
-          <div className="flex items-center gap-1 text-purple-500 mb-1">
-            <TrendingUp size={20} />
-            <span className="text-2xl font-bold">{peakHour.label}</span>
+        {peakHour && (
+          <div className="text-right">
+            <div className="flex items-center gap-1 text-purple-500 mb-1">
+              <TrendingUp size={20} />
+              <span className="text-2xl font-bold">{peakHour.label}</span>
+            </div>
+            <p className="text-xs text-gray-500 dark:text-gray-400">Your peak hour</p>
           </div>
-          <p className="text-xs text-gray-500 dark:text-gray-400">Your peak hour</p>
-        </div>
+        )}
       </div>
 
       {/* Chart */}
       <div className="space-y-2">
         {data.map((item, idx) => {
           const percentage = maxMinutes > 0 ? (item.minutes / maxMinutes) * 100 : 0;
-          const isPeak = item.hour === peakHour.hour;
+          const isPeak = peakHour && item.hour === peakHour.hour;
           
           return (
             <div key={idx} className="flex items-center gap-3">
@@ -95,19 +136,19 @@ export default function PeakHourChart({ data, loading }) {
         <div className="text-center">
           <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Morning</p>
           <p className="text-lg font-bold text-gray-800 dark:text-white">
-            {data.slice(0, 6).reduce((sum, h) => sum + h.minutes, 0)}m
+            {morningTotal}m
           </p>
         </div>
         <div className="text-center">
           <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Afternoon</p>
           <p className="text-lg font-bold text-gray-800 dark:text-white">
-            {data.slice(6, 12).reduce((sum, h) => sum + h.minutes, 0)}m
+            {afternoonTotal}m
           </p>
         </div>
         <div className="text-center">
           <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Evening</p>
           <p className="text-lg font-bold text-gray-800 dark:text-white">
-            {data.slice(12).reduce((sum, h) => sum + h.minutes, 0)}m
+            {eveningTotal}m
           </p>
         </div>
       </div>

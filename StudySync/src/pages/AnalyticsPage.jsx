@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BarChart3, Brain, Clock, TrendingUp, Target, MessageSquare, LogOut, Zap } from 'lucide-react';
+import { BarChart3, Brain, Clock, TrendingUp, Target, MessageSquare, LogOut } from 'lucide-react';
 import { motion } from 'framer-motion';
 import ProductivityHeatmap from '../components/Analytics/ProductivityHeatmap';
 import PeakHourChart from '../components/Analytics/PeakHourChart';
@@ -10,6 +10,9 @@ import RevisionPredictionGraph from '../components/Analytics/RevisionPredictionG
 import WeakAreaList from '../components/Analytics/WeakAreaList';
 import AIAssistantChat from '../components/Analytics/AIAssistantChat';
 import AnalyticsCard from '../components/Analytics/AnalyticsCard';
+import axios from 'axios';
+
+const API_BASE_URL = 'http://localhost:5000/api';
 
 export default function AnalyticsPage() {
   const navigate = useNavigate();
@@ -17,13 +20,19 @@ export default function AnalyticsPage() {
   const [loading, setLoading] = useState(true);
   const [showChat, setShowChat] = useState(false);
   
-  // Analytics data
-  const [productivityData, setProductivityData] = useState(null);
+  // Analytics data - ALL START AT ZERO/EMPTY
+  const [productivityData, setProductivityData] = useState([]);
   const [subjectMastery, setSubjectMastery] = useState([]);
   const [noteQuality, setNoteQuality] = useState(null);
   const [weakAreas, setWeakAreas] = useState([]);
   const [revisionData, setRevisionData] = useState([]);
   const [peakHours, setPeakHours] = useState([]);
+  
+  // Stats - ALL START AT ZERO
+  const [totalStudyTime, setTotalStudyTime] = useState(0);
+  const [avgDailyTime, setAvgDailyTime] = useState(0);
+  const [studyDays, setStudyDays] = useState(0);
+  const [avgMastery, setAvgMastery] = useState(0);
 
   useEffect(() => {
     const userData = localStorage.getItem('user');
@@ -36,138 +45,76 @@ export default function AnalyticsPage() {
 
   const loadAnalyticsData = async () => {
     setLoading(true);
+    const token = localStorage.getItem('token');
     
-    // Simulate loading analytics data
-    // In production, this would fetch from your backend API
-    setTimeout(() => {
-      // Generate mock data for demonstration
-      setProductivityData(generateProductivityData());
-      setSubjectMastery(generateSubjectMastery());
-      setNoteQuality(generateNoteQuality());
-      setWeakAreas(generateWeakAreas());
-      setRevisionData(generateRevisionData());
-      setPeakHours(generatePeakHours());
+    if (!token) {
+      navigate('/auth?mode=login');
+      return;
+    }
+
+    try {
+      // Fetch all analytics data from backend
+      const [heatmapRes, peakHoursRes, masteryRes] = await Promise.all([
+        axios.get(`${API_BASE_URL}/dashboard/heatmap`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        }),
+        axios.get(`${API_BASE_URL}/dashboard/peak-hours`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        }),
+        axios.get(`${API_BASE_URL}/dashboard/subject-mastery`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        })
+      ]);
+
+      // Set heatmap data (or empty array)
+      const heatmap = heatmapRes.data.success ? heatmapRes.data.data : [];
+      setProductivityData(heatmap);
+
+      // Calculate stats from heatmap
+      if (heatmap.length > 0) {
+        const total = heatmap.reduce((sum, d) => sum + d.studyMinutes, 0);
+        const days = heatmap.filter(d => d.studyMinutes > 0).length;
+        
+        setTotalStudyTime(total);
+        setAvgDailyTime(days > 0 ? Math.round(total / days) : 0);
+        setStudyDays(days);
+      }
+
+      // Set peak hours (or empty array)
+      setPeakHours(peakHoursRes.data.success ? peakHoursRes.data.data : []);
+
+      // Set subject mastery (or empty array)
+      const mastery = masteryRes.data.success ? masteryRes.data.data : [];
+      setSubjectMastery(mastery);
+      
+      if (mastery.length > 0) {
+        const avg = Math.round(mastery.reduce((sum, s) => sum + s.understanding, 0) / mastery.length);
+        setAvgMastery(avg);
+      }
+
+      // Set default revision data (static for now)
+      setRevisionData([
+        { day: 0, retention: 100, label: 'Today' },
+        { day: 1, retention: 95, label: 'Day 1' },
+        { day: 3, retention: 85, label: 'Day 3' },
+        { day: 7, retention: 70, label: 'Week 1' },
+        { day: 14, retention: 55, label: 'Week 2' },
+        { day: 30, retention: 35, label: 'Month 1' }
+      ]);
+
+      // TODO: Fetch note quality and weak areas from backend when ready
+      
+    } catch (error) {
+      console.error('Error loading analytics:', error);
+      
+      if (error.response?.status === 401) {
+        handleLogout();
+      }
+      
+      // On error, keep all data empty/zero (already set as default)
+    } finally {
       setLoading(false);
-    }, 1500);
-  };
-
-  // Mock data generators
-  const generateProductivityData = () => {
-    const data = [];
-    const today = new Date();
-    
-    for (let i = 83; i >= 0; i--) {
-      const date = new Date(today);
-      date.setDate(date.getDate() - i);
-      data.push({
-        date: date.toISOString().split('T')[0],
-        studyMinutes: Math.random() > 0.3 ? Math.floor(Math.random() * 180) + 30 : 0,
-        day: date.getDay()
-      });
     }
-    return data;
-  };
-
-  const generateSubjectMastery = () => {
-    return [
-      {
-        subject: 'Database Management',
-        understanding: 85,
-        practice: 75,
-        notesQuality: 90,
-        revisionFrequency: 70,
-        confidence: 80
-      },
-      {
-        subject: 'Data Structures',
-        understanding: 70,
-        practice: 80,
-        notesQuality: 75,
-        revisionFrequency: 65,
-        confidence: 72
-      },
-      {
-        subject: 'Operating Systems',
-        understanding: 60,
-        practice: 55,
-        notesQuality: 65,
-        revisionFrequency: 50,
-        confidence: 58
-      },
-      {
-        subject: 'Computer Networks',
-        understanding: 75,
-        practice: 70,
-        notesQuality: 80,
-        revisionFrequency: 68,
-        confidence: 73
-      }
-    ];
-  };
-
-  const generateNoteQuality = () => {
-    return {
-      averageDepth: 78,
-      averageClarity: 82,
-      averageStructure: 75,
-      totalNotes: 24,
-      analyzedNotes: 18,
-      topNote: {
-        title: 'DBMS Normalization',
-        depth: 92,
-        clarity: 88,
-        structure: 90
-      }
-    };
-  };
-
-  const generateWeakAreas = () => {
-    return [
-      {
-        topic: 'Recursion in Trees',
-        subject: 'Data Structures',
-        severity: 'high',
-        reason: 'Low practice frequency',
-        suggestion: 'Complete 10 tree recursion problems'
-      },
-      {
-        topic: 'Deadlock Prevention',
-        subject: 'Operating Systems',
-        severity: 'medium',
-        reason: 'Notes lack examples',
-        suggestion: 'Add real-world scenarios'
-      },
-      {
-        topic: 'TCP/IP Protocol',
-        subject: 'Computer Networks',
-        severity: 'medium',
-        reason: 'Missing revision',
-        suggestion: 'Review within 3 days'
-      }
-    ];
-  };
-
-  const generateRevisionData = () => {
-    return [
-      { day: 0, retention: 100, label: 'Today' },
-      { day: 1, retention: 95, label: 'Day 1' },
-      { day: 3, retention: 85, label: 'Day 3' },
-      { day: 7, retention: 70, label: 'Week 1' },
-      { day: 14, retention: 55, label: 'Week 2' },
-      { day: 30, retention: 35, label: 'Month 1' }
-    ];
-  };
-
-  const generatePeakHours = () => {
-    const hours = [];
-    for (let i = 6; i <= 23; i++) {
-      hours.push({
-        hour: i,
-        label: `${i > 12 ? i - 12 : i} ${i >= 12 ? 'PM' : 'AM'}`,
-        minutes: Math.floor(Math.random() * 120)
-      });
-    }
-    return hours;
   };
 
   const handleLogout = () => {
@@ -175,20 +122,6 @@ export default function AnalyticsPage() {
     localStorage.removeItem('user');
     navigate('/');
   };
-
-  // Calculate stats
-  const totalStudyTime = productivityData 
-    ? productivityData.reduce((sum, d) => sum + d.studyMinutes, 0) 
-    : 0;
-  const avgDailyTime = productivityData 
-    ? Math.round(totalStudyTime / productivityData.length) 
-    : 0;
-  const studyDays = productivityData 
-    ? productivityData.filter(d => d.studyMinutes > 0).length 
-    : 0;
-  const avgMastery = subjectMastery.length 
-    ? Math.round(subjectMastery.reduce((sum, s) => sum + s.understanding, 0) / subjectMastery.length) 
-    : 0;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#E9F0FF] to-[#DFF6F0] dark:from-[#0f172a] dark:via-[#1e1b4b] dark:to-[#312e81] transition-colors duration-300">
@@ -211,14 +144,6 @@ export default function AnalyticsPage() {
             
             <div className="flex items-center gap-4">
               <button
-                onClick={() => setShowChat(!showChat)}
-                className="hidden md:flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-lg transition-all shadow-lg"
-              >
-                <MessageSquare size={18} />
-                AI Assistant
-              </button>
-              
-              <button
                 onClick={handleLogout}
                 className="flex items-center gap-2 px-4 py-2 bg-red-50 dark:bg-red-500/20 hover:bg-red-100 dark:hover:bg-red-500/30 border border-red-200 dark:border-red-500/50 text-red-600 dark:text-red-300 rounded-lg transition-all"
               >
@@ -238,77 +163,82 @@ export default function AnalyticsPage() {
             Your Learning Analytics
           </h2>
           <p className="text-gray-600 dark:text-gray-300">
-            AI-powered insights into your study patterns, mastery, and growth
+            {loading ? 'Loading your insights...' : 'AI-powered insights into your study patterns, mastery, and growth'}
           </p>
         </div>
 
-        {/* Quick Stats */}
+        {/* Quick Stats - ALL SHOW ZERO FOR NEW USERS */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
           <AnalyticsCard
             icon={Clock}
             title="Total Study Time"
-            value={`${Math.floor(totalStudyTime / 60)}h ${totalStudyTime % 60}m`}
+            value={loading ? '...' : `${Math.floor(totalStudyTime / 60)}h ${totalStudyTime % 60}m`}
             subtitle={`${avgDailyTime}min/day avg`}
             color="from-blue-400 to-cyan-500"
           />
           <AnalyticsCard
             icon={TrendingUp}
             title="Active Days"
-            value={`${studyDays} days`}
-            subtitle={`${Math.round((studyDays / 84) * 100)}% consistency`}
+            value={loading ? '...' : `${studyDays} days`}
+            subtitle={`${studyDays > 0 ? Math.round((studyDays / 84) * 100) : 0}% consistency`}
             color="from-green-400 to-emerald-500"
           />
           <AnalyticsCard
             icon={Brain}
             title="Avg Mastery"
-            value={`${avgMastery}%`}
+            value={loading ? '...' : `${avgMastery}%`}
             subtitle={`${subjectMastery.length} subjects`}
             color="from-purple-400 to-pink-500"
           />
           <AnalyticsCard
             icon={Target}
             title="Weak Areas"
-            value={weakAreas.length}
-            subtitle="Need attention"
+            value={loading ? '...' : weakAreas.length}
+            subtitle={weakAreas.length > 0 ? "Need attention" : "All good!"}
             color="from-orange-400 to-red-500"
           />
         </div>
 
-        {/* Main Grid */}
-        <div className="grid lg:grid-cols-3 gap-6">
-          {/* Left Column - Charts */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Productivity Heatmap */}
-            <ProductivityHeatmap data={productivityData} loading={loading} />
-            
-            {/* Peak Hours */}
-            <PeakHourChart data={peakHours} loading={loading} />
-            
-            {/* Subject Mastery */}
-            <SubjectMasteryRadar data={subjectMastery} loading={loading} />
-            
-            {/* Revision Prediction */}
-            <RevisionPredictionGraph data={revisionData} loading={loading} />
+        {/* Empty State for New Users */}
+        {!loading && totalStudyTime === 0 && subjectMastery.length === 0 && (
+          <div className="bg-white dark:bg-[#1e1b4b] border-2 border-dashed border-gray-300 dark:border-white/20 rounded-2xl p-12 text-center mb-8">
+            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-[#E9F0FF] to-[#DFF6F0] dark:from-[#3b82f6]/20 dark:to-[#ec4899]/20 flex items-center justify-center">
+              <BarChart3 size={40} className="text-[#8AC6D1] dark:text-[#3b82f6]" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-3">
+              No Analytics Data Yet
+            </h3>
+            <p className="text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">
+              Start using the Focus Timer and creating goals to see your analytics here. Your study patterns, peak hours, and subject mastery will appear as you study.
+            </p>
+            <button
+              onClick={() => navigate('/focus-timer')}
+              className="px-8 py-3 bg-gradient-to-r from-[#8AC6D1] to-[#A3BFFA] dark:from-[#3b82f6] dark:to-[#ec4899] text-white rounded-xl font-semibold hover:shadow-lg transition-all"
+            >
+              Start Your First Session
+            </button>
           </div>
+        )}
 
-          {/* Right Column - Insights */}
-          <div className="lg:col-span-1 space-y-6">
-            {/* Note Quality */}
-            <NoteQualityAnalysis data={noteQuality} loading={loading} />
-            
-            {/* Weak Areas */}
-            <WeakAreaList areas={weakAreas} loading={loading} />
+        {/* Main Grid - Only show if data exists */}
+        {!loading && (totalStudyTime > 0 || subjectMastery.length > 0) && (
+          <div className="grid lg:grid-cols-3 gap-6">
+            {/* Left Column - Charts */}
+            <div className="lg:col-span-2 space-y-6">
+              <ProductivityHeatmap data={productivityData} loading={loading} />
+              <PeakHourChart data={peakHours} loading={loading} />
+              <SubjectMasteryRadar data={subjectMastery} loading={loading} />
+              <RevisionPredictionGraph data={revisionData} loading={loading} />
+            </div>
+
+            {/* Right Column - Insights */}
+            <div className="lg:col-span-1 space-y-6">
+              <NoteQualityAnalysis data={noteQuality} loading={loading} />
+              <WeakAreaList areas={weakAreas} loading={loading} />
+            </div>
           </div>
-        </div>
+        )}
       </div>
-
-      {/* AI Chat Sidebar */}
-      {showChat && (
-        <AIAssistantChat 
-          onClose={() => setShowChat(false)}
-          userData={{ subjectMastery, weakAreas, noteQuality }}
-        />
-      )}
     </div>
   );
 }

@@ -14,8 +14,36 @@ export default function ProductivityHeatmap({ data, loading }) {
     );
   }
 
+  // EMPTY STATE - Show completely blank heatmap
+  if (data.length === 0) {
+    return (
+      <div className="bg-white dark:bg-[#1e1b4b] border-2 border-gray-200 dark:border-white/10 rounded-2xl p-6 shadow-lg">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h3 className="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-2 mb-1">
+              <Calendar size={20} className="text-blue-500" />
+              Study Activity Heatmap
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              No activity recorded yet
+            </p>
+          </div>
+        </div>
+        
+        <div className="text-center py-12">
+          <p className="text-gray-500 dark:text-gray-400 mb-2">
+            📊 Your study activity will appear here
+          </p>
+          <p className="text-sm text-gray-400 dark:text-gray-500">
+            Start a focus session to see your first data point!
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   const getColor = (minutes) => {
-    if (minutes === 0) return 'bg-gray-100 dark:bg-white/5';
+    if (minutes === 0) return 'bg-gray-100 dark:bg-white/5'; // WHITE/EMPTY for zero
     if (minutes < 30) return 'bg-green-200 dark:bg-green-500/30';
     if (minutes < 60) return 'bg-green-300 dark:bg-green-500/50';
     if (minutes < 120) return 'bg-green-400 dark:bg-green-500/70';
@@ -39,7 +67,9 @@ export default function ProductivityHeatmap({ data, loading }) {
   // Calculate stats
   const totalMinutes = data.reduce((sum, d) => sum + d.studyMinutes, 0);
   const activeDays = data.filter(d => d.studyMinutes > 0).length;
-  const avgMinutes = Math.round(totalMinutes / activeDays) || 0;
+  const avgMinutes = activeDays > 0 ? Math.round(totalMinutes / activeDays) : 0;
+  const maxMinutes = data.length > 0 ? Math.max(...data.map(d => d.studyMinutes)) : 0;
+  const consistency = data.length > 0 ? Math.round((activeDays / data.length) * 100) : 0;
 
   return (
     <motion.div
@@ -55,7 +85,7 @@ export default function ProductivityHeatmap({ data, loading }) {
             Study Activity Heatmap
           </h3>
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            Last 12 weeks • {activeDays} active days
+            Last {Math.ceil(data.length / 7)} weeks • {activeDays} active days
           </p>
         </div>
         
@@ -79,13 +109,13 @@ export default function ProductivityHeatmap({ data, loading }) {
         <div className="p-3 bg-green-50 dark:bg-green-500/10 rounded-lg">
           <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Best Day</p>
           <p className="text-lg font-bold text-green-600 dark:text-green-400">
-            {Math.max(...data.map(d => d.studyMinutes))}m
+            {maxMinutes}m
           </p>
         </div>
         <div className="p-3 bg-purple-50 dark:bg-purple-500/10 rounded-lg">
           <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Consistency</p>
           <p className="text-lg font-bold text-purple-600 dark:text-purple-400">
-            {Math.round((activeDays / data.length) * 100)}%
+            {consistency}%
           </p>
         </div>
       </div>

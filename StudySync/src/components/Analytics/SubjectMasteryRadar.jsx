@@ -5,12 +5,38 @@ import { Brain, ChevronRight } from 'lucide-react';
 export default function SubjectMasteryRadar({ data, loading }) {
   const [selectedSubject, setSelectedSubject] = useState(null);
 
-  if (loading || !data || data.length === 0) {
+  if (loading) {
     return (
       <div className="bg-white dark:bg-[#1e1b4b] border-2 border-gray-200 dark:border-white/10 rounded-2xl p-6 shadow-lg">
         <div className="animate-pulse space-y-4">
           <div className="h-6 bg-gray-200 dark:bg-white/10 rounded w-1/3"></div>
           <div className="h-64 bg-gray-200 dark:bg-white/10 rounded"></div>
+        </div>
+      </div>
+    );
+  }
+
+  // EMPTY STATE - No subjects yet
+  if (!data || data.length === 0) {
+    return (
+      <div className="bg-white dark:bg-[#1e1b4b] border-2 border-gray-200 dark:border-white/10 rounded-2xl p-6 shadow-lg">
+        <div className="mb-6">
+          <h3 className="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-2 mb-1">
+            <Brain size={20} className="text-indigo-500" />
+            Subject Mastery Dashboard
+          </h3>
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            No subjects tracked yet
+          </p>
+        </div>
+
+        <div className="text-center py-12">
+          <p className="text-gray-500 dark:text-gray-400 mb-2">
+            🧠 Track your mastery across different subjects
+          </p>
+          <p className="text-sm text-gray-400 dark:text-gray-500">
+            Start studying, taking notes, and setting goals to see your subject mastery!
+          </p>
         </div>
       </div>
     );
@@ -43,7 +69,7 @@ export default function SubjectMasteryRadar({ data, loading }) {
           Subject Mastery Dashboard
         </h3>
         <p className="text-sm text-gray-600 dark:text-gray-400">
-          Comprehensive skill analysis across subjects
+          Comprehensive skill analysis across {data.length} {data.length === 1 ? 'subject' : 'subjects'}
         </p>
       </div>
 
